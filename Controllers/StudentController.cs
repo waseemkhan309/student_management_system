@@ -65,19 +65,20 @@ namespace Student_CRUD_Operation.Controllers
 
             return RedirectToAction("list","student");
         }
-        
-        [HttpPost]
-        public async Task<IActionResult> Delete(Student viewModel)
-        {
-            var student = await dbContext.Students.FindAsync(viewModel.Id);
 
-            if (viewModel is not null) {
-                dbContext.Students.Remove(student);
-                await dbContext.SaveChangesAsync();
+        [HttpPost]
+        public async Task<IActionResult> Delete(int id)
+        {
+            var student = await dbContext.Students.FindAsync(id);
+            if (student == null)
+            {
+                return NotFound();
             }
 
-            return RedirectToAction("list", "student");
+            dbContext.Students.Remove(student);
+            await dbContext.SaveChangesAsync();
+
+            return RedirectToAction("List", "Student"); // Or wherever you want to redirect
         }
-        
     }
 }
